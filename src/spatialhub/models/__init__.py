@@ -1,0 +1,1 @@
+from .efficient_loftr import EfficientLoFTRAdapter as EfficientLoFTR
