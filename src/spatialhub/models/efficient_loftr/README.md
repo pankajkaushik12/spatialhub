@@ -63,17 +63,17 @@ To eliminate matches that fall inside the padded regions, the adapter applies a 
 
 $$
 V =
-\left\{
+\{
 (P_0, P_1)
-\;\middle|\;
+\mid
 x_0 < W_a
-\;\land\;
+\land
 y_0 < H_a
-\;\land\;
+\land
 x_1 < W_b
-\;\land\;
+\land
 y_1 < H_b
-\right\}
+\}
 $$
 
 ## API Reference
