@@ -19,6 +19,10 @@ dependencies = [
     "opencv-python-headless>=5.0.0.93",
 ]
 
+[project.urls]
+Homepage = "https://github.com/pankajkaushik12/spatialhub"
+Repository = "https://github.com/pankajkaushik12/spatialhub.git"
+
 [project.optional-dependencies]
 gpu = ["onnxruntime-gpu>=1.19.2"]
 dev = ["pytest>=9.1.1"]
