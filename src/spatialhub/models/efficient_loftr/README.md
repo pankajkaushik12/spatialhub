@@ -63,11 +63,16 @@ To eliminate matches that fall inside the padded regions, the adapter applies a 
 
 $$
 V =
-\left\{(P_0, P_1)\;\middle|\;
+\left\{
+(P_0, P_1)
+\;\middle|\;
 x_0 < W_a
-\land y_0 < H_a
-\land x_1 < W_b
-\land y_1 < H_b
+\;\land\;
+y_0 < H_a
+\;\land\;
+x_1 < W_b
+\;\land\;
+y_1 < H_b
 \right\}
 $$
 
