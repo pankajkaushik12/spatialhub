@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "spatialhub"
-version = "0.1.0"
+version = "0.1.1"
 description = "A lightweight, PyTorch-free spatial computing and feature matching library."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -29,3 +29,20 @@ dev = ["pytest>=9.1.1"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/spatialhub"]
+
+[tool.hatch.build]
+exclude = [
+  "**/data/",
+  "**/weights/",
+  "*.onnx",
+  "*.pt",
+  "*.pth",
+  "*.bin",
+  "*.jpg",
+  "*.png"
+]
+
+[dependency-groups]
+dev = [
+    "twine>=6.2.0",
+]

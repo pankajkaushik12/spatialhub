@@ -1,5 +1,10 @@
 # spatialhub
 
+[![PyPI version](https://badge.fury.io/py/spatialhub.svg)](https://badge.fury.io/py/spatialhub)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![GitHub Repo stars](https://img.shields.io/github/stars/pankajkaushik12/spatialhub?style=social)](https://github.com/pankajkaushik12/spatialhub)
+
 A lightweight, PyTorch-free computer vision hub for Python.
 
 `spatialhub` is built for production and fast execution. By removing heavy PyTorch code and using ONNX Runtime, it gives you reliable, server-safe AI models with automatic downloads and zero memory leaks.
