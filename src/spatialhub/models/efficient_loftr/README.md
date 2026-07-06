@@ -1,13 +1,17 @@
 # EfficientLoFTR (ONNX Adapter)
 
-This module provides an ONNX Runtime adapter for **EfficientLoFTR**, a local feature matching model designed for efficient semi-dense correspondence estimation.
+This module provides an ONNX Runtime adapter for **EfficientLoFTR**, a local feature matching model for semi-dense feature correspondence.
 
-The adapter removes the dependency on PyTorch during inference by using an optimized ONNX model. It supports CPU and GPU execution through ONNX Runtime, automatic model downloading, and dynamic image preprocessing for arbitrary input resolutions.
+The adapter runs EfficientLoFTR without requiring PyTorch during inference. It supports multiple ONNX Runtime execution providers, automatic model downloading, and dynamic preprocessing for images of different sizes.
+
+> **Note**
+> This adapter provides inference only. Training is not supported.
 
 ## Features
-* **Dynamic Resolution:** Accepts images of any size and aspect ratio, dynamically padding and scaling to the nearest multiple of 32 as required by the model architecture.
-* **Smart Memory Management:** Employs lazy visualization. Images remain as NumPy arrays until visualization is explicitly requested.
-* **Auto-Downloading:** Seamlessly fetches the `.onnx` file from Hugging Face Hub and caches them locally on the first run.
+- **Dynamic Resolution:** Accepts images of different sizes and aspect ratios by resizing and aligning inputs to the nearest multiple of 32.
+- **Lazy Visualization:** Images are only loaded for visualization when `visualize()` is called, reducing unnecessary memory usage.
+- **Automatic Model Download:** Downloads the required `.onnx` model from Hugging Face Hub on first use and caches it locally.
+- **CPU and GPU Support:** Works with ONNX Runtime execution providers including CPU, CUDA, TensorRT, and ROCm.
 
 
 ## Preprocessing Pipeline
@@ -79,7 +83,7 @@ $$
 ## API Reference
 
 ### `EfficientLoFTR`
-The core class for initializing the ONNX runtime session.
+Initializes an EfficientLoFTR inference session using the selected ONNX Runtime execution provider.
 
 ```python
 from spatialhub import EfficientLoFTR
@@ -107,7 +111,7 @@ result = matcher.match(
     max_dim=1024
 )
 ```
-Executes the inference pipeline on a pair of images.
+Matches local features between two input images and returns the results as a `MatchResult`.
 
 **Parameters**:
 - **`image_a`** / **`image_b`** (`str | Path | np.ndarray`): The target images. Can be string paths, system paths, or raw NumPy arrays (Grayscale, BGR, or RGBA).
@@ -117,7 +121,7 @@ Executes the inference pipeline on a pair of images.
 - `MatchResult`: A structured dataclass holding the matched features.
 
 ### `MatchResult`
-Represents the output of match() and contains the matched keypoints and confidence scores.
+Represents the output of `match()` and stores the matched keypoints, confidence scores, and references to the original inputs.
 - **`image_a`** / **`image_b`** (`str | Path | np.ndarray`): The raw reference image paths or input array tokens.
 - **`keypoints_a`** (`np.ndarray of shape [N, 2]`): The verified $[x, y]$ keypoints mapped to the original scale of image_a.
 - **`keypoints_b`** (`np.ndarray of shape [N, 2]`): The verified $[x, y]$ keypoints mapped to the original scale of image_b.
@@ -132,8 +136,7 @@ result.visualize(
     save_path=None
 )
 ```
-
-Generates a side-by-side matching visualization.
+Generates a side-by-side visualization of the matched keypoints.
 
 Parameters:
 - **`conf_thresh`** (`float`): Drops matches with a confidence score below this threshold. Default is 0.5.
@@ -143,8 +146,8 @@ Parameters:
 
 ## Usage Examples
 
-### Example 1: High-Performance GPU Match & Filter Top-K
-Runs the adapter with GPU acceleration, extracts features, and plots the top 50 matches.
+### Example 1: GPU Inference
+Runs the adapter with GPU acceleration and visualizes the top 50 highest-confidence matches.
 
 ```python
 from spatialhub import EfficientLoFTR
@@ -161,8 +164,8 @@ result.visualize(top_k=50, save_path="outputs/gpu_matches.png")
 
 
 
-### Example 2: Fully Headless Docker Execution
-When running on remote servers, drawing a GUI window crashes standard OpenCV. By passing `save_path` and using `opencv-python-headless`, this code executes perfectly inside any Docker container or headless cloud instance.
+### Example 2: Headless Environment
+Runs EfficientLoFTR in a headless environment such as a Docker container or remote server. The visualization is written directly to disk without opening a GUI window.
 ```python
 import numpy as np
 import cv2
