@@ -16,14 +16,19 @@ logger = logging.getLogger(__name__)
 class EfficientLoFTRAdapter():
 
     # Initialize the ONNX model
-    def __init__(self, model_path: str | Path | None = None, provider: str = "CPUExecutionProvider"):
+    def __init__(self, model_path: str | Path | None = None, provider: str = "CPUExecutionProvider", model_type: str = "full"):
         """
         Adapter for EfficientLoFTR. Handles ONNX execution, input normalization, and coordinate projection.
         """
+        if model_type not in ['full', 'opt']:
+            raise ValueError("model_type must be either 'full' or 'opt'")
+
         if model_path is None:
-            logger.info("No local model path provided. Fetching weights from Hugging Face...")
+            filename = "eloftr_outdoor_full.onnx" if model_type == "full" else "eloftr_outdoor_opt.onnx"
+            
+            logger.info(f"No local model path provided. Fetching '{model_type}' weights from Hugging Face...")
             try:
-                model_path = hf_hub_download(repo_id="pankaj-kaushik/efficient-loftr-onnx", filename="eloftr_outdoor.onnx")
+                model_path = hf_hub_download(repo_id="pankaj-kaushik/efficient-loftr-onnx", filename=filename)
             except Exception as e:
                 raise RuntimeError(
                     "Failed to download model weights from Hugging Face. "
