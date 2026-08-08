@@ -30,6 +30,12 @@ dev = ["pytest>=9.1.1"]
 [tool.hatch.build.targets.wheel]
 packages = ["src/spatialhub"]
 
+[tool.uv.workspace]
+exclude = [
+    "src/spatialhub/models/efficient_loftr",
+    "src/spatialhub/models/depth_anything_3/DepthAnything3",
+]
+
 [tool.hatch.build]
 exclude = [
   "**/data/",
