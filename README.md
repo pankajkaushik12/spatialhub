@@ -7,7 +7,7 @@
 
 A lightweight computer vision library built around ONNX Runtime.
 
-`spatialhub` is a personal project that collects useful computer vision models behind a simple and consistent Python API. The focus is on lightweight inference, minimal dependencies, and easy deployment.
+`spatialhub` is a open-source computer vision library that collects useful perception models behind a simple and consistent Python API. The focus is on lightweight inference, minimal dependencies, and easy deployment.
 
 > **Status:** Work in progress. The library is actively being developed by a single maintainer. APIs may change, and only a small number of models are currently available.
 
@@ -34,10 +34,11 @@ The project is still growing, and the feature set will expand over time.
 Currently supported:
 
 - [**EfficientLoFTR**](./src/spatialhub/models/efficient_loftr/README.md) — Semi-dense local feature matching.
+- [**DepthAnything-3**](./src/spatialhub/models/depth_anything_3/README.md) — Monocular relative and metric depth estimation.
 
 ---
 
-## Planned
+## Roadmap
 
 Some models and utilities planned for future releases include:
 
@@ -70,23 +71,32 @@ pip install "spatialhub[gpu]"
 
 ## Quick Start
 
-All models follow a similar API.
+All models follow a consistent, unified API pattern: **Initialize the engine, pass inputs, and receive structured predictions.**
 
+### 1. Feature Matching (EfficientLoFTR)
 ```python
 from spatialhub import EfficientLoFTR
 
-model = EfficientLoFTR()
-
-result = model.match(
-    "image1.jpg",
-    "image2.jpg",
-    max_dim=1024,
-)
+matcher = EfficientLoFTR()
+result = matcher.match("image1.jpg", "image2.jpg", max_dim=1024,)
 
 result.visualize(
     top_k=50,
     save_path="output.png",
 )
+```
+
+### 2. Depth & Pose Estimation (Depth Anything 3)
+```python
+import cv2
+from spatialhub import DepthAnything3
+
+estimator = DepthAnything3(model_name="da3_base")
+depth_result = estimator.estimate_depth(images=["view1.png", "view2.png"])
+
+# Render colored depth map
+depth_viz = estimator.visualize(depth_result.depth[0])
+cv2.imwrite("depth.png", depth_viz)
 ```
 
 ---

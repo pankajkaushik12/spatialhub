@@ -1,0 +1,3 @@
+[submodule "src/spatialhub/models/depth_anything_3/DepthAnything3"]
+	path = src/spatialhub/models/depth_anything_3/DepthAnything3
+	url = https://github.com/pankajkaushik12/DepthAnything3.git

@@ -1,1 +1,2 @@
 from .efficient_loftr import EfficientLoFTRAdapter as EfficientLoFTR
+from .depth_anything_3 import DepthAnything3Adapter as DepthAnything3
